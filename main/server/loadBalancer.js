@@ -10,6 +10,22 @@ app.use((req, res) => {
   const server = servers[currentServer];
   currentServer = (currentServer + 1) % servers.length;
     console.log(req.body);
+
+    if(req.method =="GET"){
+      (async ()=>{  
+        try {
+            console.log(req.method, req.headers, req.body);
+            const response = await fetch(server);
+        
+            const data = await response.text();
+            res.status(response.status).send(data);
+          } catch (err) {
+            res.status(500).send(err.message);
+          }
+      })();
+    }
+else{
+
   (async ()=>{  
     try {
         console.log(req.method, req.headers, req.body);
@@ -27,6 +43,7 @@ app.use((req, res) => {
         res.status(500).send(err.message);
       }
   })();
+}
 });
 
 app.listen(3000, () => console.log("Load Balancer running on port 3000"));
