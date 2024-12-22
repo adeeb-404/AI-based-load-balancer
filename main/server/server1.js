@@ -1,5 +1,5 @@
 import express from "express";
-import logPerformance from "../server_health.js"; // Adjust the path based on your project structure
+import logPerformance from "./server_health.js"; // Adjust the path based on your project structure
 
 const app = express();
 app.use(express.json());
