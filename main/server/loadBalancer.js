@@ -2,7 +2,7 @@ import express from "express";
 
 const app = express();
 app.use(express.json());
-const servers = ["http://localhost:5000", "http://localhost:5001"];
+const servers = ["https://ai-based-load-balancer-302o.onrender.com", "https://ai-based-load-balancer-1.onrender.com"];
 let currentServer = 0;
 // Load Balancing Logic
 app.use((req, res) => {
