@@ -6,19 +6,19 @@ app.use(express.json());
 
 // POST handler
 app.post("/", (req, res) => {
-  console.log(req.body, "request to server 1");
-  res.json({logs:logPerformance("Server1"),body:"POST from server 2"});
+  console.log(req.body, "request to server 2");
+  res.json({logs:logPerformance("Server 2"),body:"POST from server 2"});
 });
 
 // GET handler
 app.get("/", (req, res) => {
-  console.log("Request to server 1");
-  res.json({logs:logPerformance("Server1"),body:"GET from server 2"});
+  console.log("Request to server 2");
+  res.json({logs:logPerformance("Server 2"),body:"GET from server 2"});
 });
 
 // Start the server
 const PORT = 5001;
 app.listen(PORT, () => {
-  console.log(`Server 1 running on port ${PORT}`);
+  console.log(`Server 2 running on port ${PORT}`);
 
 });

@@ -20,10 +20,18 @@ const servers = [
   "http://localhost:5001",
 ];
 let currentServer = 0;
+const serverCallCount={};
+// let curr
+
+servers.forEach((server) => {
+  serverCallCount[server] = 0;
+});
+
 
 // Function to get the next server
 const getNextServer = () => {
   const server = servers[currentServer];
+  serverCallCount[server]+=1;
   currentServer = (currentServer + 1) % servers.length;
   return server;
 };
@@ -47,8 +55,11 @@ app.use(async (req, res) => {
     const responseData = await response.json();
 
     const body = responseData.body;
-    const logData = responseData.logs; 
-    // console.log(logs)
+    var logData = responseData.logs;
+    logData.method=req.method;
+    logData.noOfRequests=serverCallCount[server]; 
+    console.log(server)
+    console.log(logData.noOfRequests)
     // fs.appendFileSync(
     //   path.join(__dirname, "serverlogs.txt"),
     //   JSON.stringify(logs)+'\n'
@@ -57,14 +68,14 @@ app.use(async (req, res) => {
     console.log(`Response from ${server}:`, responseData);
 
       // Convert the log data to CSV format
-  const logRow = `${logData.timestamp},${logData.servername},${logData.userCPUTime},${logData.systemCPUTime},${logData.currentCPUUsagePercent},${logData.rssMemory},${logData.heapTotalMemory},${logData.heapUsedMemory},${logData.freeMemory},${logData.totalMemory},${logData.uptime}\n`;
+  const logRow = `${logData.timestamp},${logData.servername},${logData.userCPUTime},${logData.systemCPUTime},${logData.currentCPUUsagePercent},${logData.rssMemory},${logData.heapTotalMemory},${logData.heapUsedMemory},${logData.freeMemory},${logData.totalMemory},${logData.uptime},${logData.method},${logData.noOfRequests}\n`;
 
   // Path to the CSV file
   const csvFilePath = path.join(process.cwd(), "server_logs.csv");
 
   // Append to CSV file, or create it if it doesn't exist
   if (!fs.existsSync(csvFilePath)) {
-    const header = "Timestamp,Server Name,User CPU Time,System CPU Time,CPU Usage (%),RSS Memory,Heap Total Memory,Heap Used Memory,Free Memory,Total Memory,Uptime (s)\n";
+    const header = "Timestamp,Server Name,User CPU Time,System CPU Time,CPU Usage (%),RSS Memory,Heap Total Memory,Heap Used Memory,Free Memory,Total Memory,Uptime(s) ,Method,noOfRequests \n";
     fs.writeFileSync(csvFilePath, header); // Write header if file doesn't exist
   }
 
