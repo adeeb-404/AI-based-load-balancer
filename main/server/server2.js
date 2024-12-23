@@ -6,12 +6,12 @@ const app = express();
 app.use(express.json());
 app.post('/', (req, res) => {
     console.log(req.body," request to server 2")
-    logPerformance("Server1");
+    logPerformance("Server2");
     res.send('Result from server 2');
 });
 app.get('/',(req,res)=>{
     console.log("resquest to server1");
-    logPerformance("Server1");
+    logPerformance("Server2");
     res.send('get request from server1');
   });
 app.listen(5001, (req, res) => {
